@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\Post\CreatePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Post;
 
 class PostsController extends Controller
@@ -70,9 +71,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('posts.create')->with('post', $post);    
     }
 
     /**
@@ -82,10 +83,25 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+$image = $request->image->store('posts');
+        $post->update([
+
+            
+
+                'title' => $request->title,
+                'description' => $request->description,
+                'content' => $request->content,
+                'image' => $image,
+    
+         ]);
+
+    session()->flash('success','Posts Updated succesfully');
+
+    return redirect(route('posts.index'));
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -93,8 +109,10 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        session()->flash('success', 'Post has been deleted');
+        return redirect(route('posts.index'));
     }
 }
