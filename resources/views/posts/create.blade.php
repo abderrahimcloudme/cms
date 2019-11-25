@@ -48,7 +48,7 @@
 				<input type="file" class="form-control" id="image" name="image" value="{{ isset($post) ? $post->image : '' }}" >
 			</div>
 			<div class="form-group">
-				<button class="btn btn-success">Add Post</button>
+				<button class="btn btn-success">{{isset($post) ? 'Update Post' : 'Add Post' }}</button>
 			</div>
 
 		</form>
