@@ -109,10 +109,35 @@ $image = $request->image->store('posts');
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        $post->delete();
+        $post = Post::withTrashed()->where('id', $id)->firstOrFail();
+        
+        if($post->trashed()){
+            $post->forceDelete();
+        }else{
+            $post->delete();
+        }
+        
         session()->flash('success', 'Post has been deleted');
         return redirect(route('posts.index'));
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function trashed()
+
+    {
+        $posts = Post::withTrashed()->get();
+
+         return view('posts.index')->with('posts', $posts);
+    }
+
+
+
 }
