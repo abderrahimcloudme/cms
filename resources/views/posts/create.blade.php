@@ -19,7 +19,7 @@
 
 </div>
 @endif
-
+Permanently 
 		<form action="{{  isset($post) ? route('posts.update' , $post->id) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
 			@csrf
 
@@ -43,9 +43,15 @@
 				<label for="publier_le">Publier le</label>
 				<input type="text" class="form-control" id="publier_le" name="publier_le" value="{{ isset($post) ? $post->publier_le : '' }}"  >
 			</div>
+			@if(isset($post))
+			<div class="form-group">
+			<img src="{{ asset('storage/'.$post->image) }}" alt="" style="width:100%;">
+			</div>
+			@endif
 			<div class="form-group">
 				<label for="image">Image</label>
-				<input type="file" class="form-control" id="image" name="image" value="{{ isset($post) ? $post->image : '' }}" >
+
+				<input type="file" class="form-control" id="image" name="image" >
 			</div>
 			<div class="form-group">
 				<button class="btn btn-success">{{isset($post) ? 'Update Post' : 'Add Post' }}</button>

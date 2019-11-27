@@ -86,18 +86,25 @@ class PostsController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+$data = [
+    'title' => $request->title,
+    'description' => $request->description,
+    'content' => $request->content,
+    'publier_le' => $request->publier_le
+
+];
+//check if new imaage
+if($request->hasFile('image')){
+//upload it
 $image = $request->image->store('posts');
-        $post->update([
+//delete old one
+Storage::delete($post->image);
+$data['image'] = $image ;
 
-            
-
-                'title' => $request->title,
-                'description' => $request->description,
-                'content' => $request->content,
-                'image' => $image,
-    
-         ]);
-
+}
+//update attribute
+    $post->update($data);
+//session flash
     session()->flash('success','Posts Updated succesfully');
 
     return redirect(route('posts.index'));
