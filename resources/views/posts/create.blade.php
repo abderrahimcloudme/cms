@@ -37,7 +37,8 @@
 			</div>
 			<div class="form-group">
 				<label for="content">Content</label>
-				<textarea name="content" id="content" class="form-control"  cols="5" rows="5"  >{{ isset($post) ? $post->content : '' }}</textarea>
+				<input id="content" type="hidden" value="{{ isset($post) ? $post->content : '' }}" name="content">
+  				<trix-editor input="content"></trix-editor>
 			</div>
 			<div class="form-group">
 				<label for="publier_le">Publier le</label>
@@ -54,5 +55,26 @@
 		</form>
 	</div>
 </div>
+
+@endsection
+
+@section('css')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.0/trix.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+@endsection
+
+@section('script')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.0/trix.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+ flatpickr("#publier_le", {
+ 	enableTime: true,
+ });
+</script>
 
 @endsection

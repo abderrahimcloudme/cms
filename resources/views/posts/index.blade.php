@@ -75,7 +75,9 @@
 
 @endsection
 
+
 @section('script')
+
 <script>
 function handleDelete(id){
 
