@@ -98,7 +98,7 @@ if($request->hasFile('image')){
 //upload it
 $image = $request->image->store('posts');
 //delete old one
-Storage::delete($post->image);
+$post->deleteImage();
 $data['image'] = $image ;
 
 }
@@ -122,7 +122,7 @@ $data['image'] = $image ;
         $post = Post::withTrashed()->where('id', $id)->firstOrFail();
         
         if($post->trashed()){
-                Storage::delete($post->image);
+            $post->deleteImage();
 
             $post->forceDelete();
         }else{
@@ -143,9 +143,20 @@ $data['image'] = $image ;
     public function trashed()
 
     {
-        $posts = Post::withTrashed()->get();
+        $posts = Post::onlyTrashed()->get();
 
          return view('posts.index')->with('posts', $posts);
+    }
+
+
+    public function restore($id){
+
+        $post = Post::withTrashed()->where('id', $id)->firstOrFail();
+        $post->restore();
+        session()->flash('success','Posts restored succesfully');
+
+        return redirect()->back();
+
     }
 
 
